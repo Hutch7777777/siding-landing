@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siding Cost Calculator | Exterior Finishes — Seattle's Premier Siding Contractor</title>
+<meta name="description" content="Get an instant siding cost estimate in under 60 seconds. Serving all of Western Washington for 18+ years.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #0c1a2e;
+    --navy: #132238;
+    --navy-mid: #1a2d47;
+    --navy-light: #243a56;
+    --blue-accent: #2e6bb5;
+    --blue-bright: #3b82f6;
+    --blue-glow: #4a9eff;
+    --gold: #c8a44e;
+    --gold-light: #dbb863;
+    --white: #ffffff;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --green-confirm: #22c55e;
+    --radius: 10px;
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12);
+    --shadow-button: 0 4px 14px rgba(46,107,181,0.4);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── UTILITY BAR ── */
+  .util-bar {
+    background: var(--navy-deep);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 6px 0;
+    font-size: 13px;
+  }
+  .util-bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .util-links { display: flex; gap: 20px; }
+  .util-links a {
+    color: var(--gray-400);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .util-links a:hover { color: var(--white); }
+  .util-social { display: flex; gap: 10px; }
+  .util-social a {
+    color: var(--gray-400);
+    transition: color 0.2s;
+  }
+  .util-social a:hover { color: var(--white); }
+  .util-social svg { width: 16px; height: 16px; }
+
+  /* ── MAIN NAV ── */
+  .main-nav {
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+  }
+  .nav-logo img {
+    height: 48px;
+    display: block;
+  }
+  .nav-logo .logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1.1;
+  }
+  .nav-logo .logo-text span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9.5px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: 1px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links > li { position: relative; }
+  .nav-links > li > a {
+    display: block;
+    padding: 10px 14px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links > li > a:hover {
+    color: var(--blue-glow);
+    border-bottom-color: var(--blue-glow);
+  }
+  /* Dropdown */
+  .nav-links li .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    padding: 6px 0;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    z-index: 200;
+  }
+  .nav-links li:hover .dropdown { display: block; }
+  .dropdown a {
+    display: block;
+    padding: 10px 18px;
+    color: var(--gray-200);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+  }
+  .dropdown a:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--white);
+  }
+  /* Phone CTA in nav */
+  .nav-phone a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border: 1.5px solid var(--white);
+    border-radius: 6px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-phone a:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--blue-glow);
+    color: var(--blue-glow);
+  }
+  .nav-phone svg { width: 16px; height: 16px; }
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--white);
+  }
+  .hamburger svg { width: 26px; height: 26px; }
+  /* Mobile nav overlay */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--navy);
+    z-index: 999;
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .mobile-nav.open { display: flex; flex-direction: column; }
+  .mobile-nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .mobile-close {
+    background: none;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    padding: 8px;
+  }
+  .mobile-close svg { width: 28px; height: 28px; }
+  .mobile-nav-links { list-style: none; }
+  .mobile-nav-links li { border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .mobile-nav-links a {
+    display: block;
+    padding: 16px 0;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .mobile-nav-links .sub a {
+    padding-left: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-200);
+  }
+  .mobile-nav-phone {
+    margin-top: 28px;
+    text-align: center;
+  }
+  .mobile-nav-phone a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: var(--blue-accent);
+    color: var(--white);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  /* ── HERO SECTION ── */
+  .hero {
+    position: relative;
+    min-height: calc(100vh - 69px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('./images/hero-bg.jpg') center/cover no-repeat;
+    z-index: 0;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(12,26,46,0.93) 0%,
+      rgba(19,34,56,0.87) 40%,
+      rgba(19,34,56,0.65) 100%
+    );
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Left column — messaging */
+  .hero-copy {
+    animation: fadeUp 0.7s ease-out;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200,164,78,0.12);
+    border: 1px solid rgba(200,164,78,0.3);
+    color: var(--gold-light);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .hero-badge svg { width: 14px; height: 14px; }
+  .hero-copy h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+  .hero-copy h1 em {
+    font-style: normal;
+    color: var(--blue-glow);
+  }
+  .hero-copy p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--gray-200);
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+
+  /* Trust pills */
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .trust-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-200);
+  }
+  .trust-pill svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .trust-pill .check { color: var(--green-confirm); }
+  .trust-pill .star { color: var(--gold); }
+
+
+  /* ── CALCULATOR CARD ── */
+  .calc-card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    color: var(--navy-deep);
+    animation: fadeUp 0.7s ease-out 0.15s both;
+  }
+  .calc-header {
+    background: var(--navy);
+    padding: 20px 28px;
+    text-align: center;
+  }
+  .calc-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .calc-header p {
+    font-size: 13px;
+    color: var(--gray-400);
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    display: flex;
+    gap: 4px;
+    padding: 16px 28px 0;
+  }
+  .progress-step {
+    flex: 1;
+    height: 4px;
+    background: var(--gray-200);
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+  .progress-step.active { background: var(--blue-accent); }
+
+  .step-indicator {
+    text-align: right;
+    padding: 8px 28px 0;
+    font-size: 12px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+
+  /* Steps container */
+  .calc-body { padding: 20px 28px 28px; }
+
+  .step { display: none; }
+  .step.active { display: block; animation: fadeIn 0.35s ease-out; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .step-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-accent);
+    margin-bottom: 6px;
+  }
+  .step-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--navy-deep);
+    margin-bottom: 20px;
+  }
+
+  /* Form inputs */
+  .form-group { margin-bottom: 14px; }
+  .form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--navy-deep);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    background: var(--white);
+  }
+  .form-group input::placeholder { color: var(--gray-400); }
+  .form-group input:focus {
+    border-color: var(--blue-accent);
+    box-shadow: 0 0 0 3px rgba(46,107,181,0.1);
+  }
+
+  /* Sqft selector */
+  .sqft-input-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .sqft-input-wrap input {
+    width: 100%;
+    padding: 14px 56px 14px 16px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy-deep);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sqft-input-wrap input:focus { border-color: var(--blue-accent); }
+  .sqft-unit {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+
+  .quick-sizes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .size-btn {
+    padding: 10px 4px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--white);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .size-btn:hover { border-color: var(--blue-accent); background: rgba(46,107,181,0.04); }
+  .size-btn.selected {
+    border-color: var(--blue-accent);
+    background: rgba(46,107,181,0.08);
+  }
+  .size-btn .size-label {
+    font-size: 12px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+  .size-btn .size-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    margin-top: 2px;
+  }
+
+  /* Material cards */
+  .material-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .material-card {
+    padding: 12px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+    text-align: center;
+  }
+  .material-card:hover { border-color: var(--blue-accent); }
+  .material-card.selected {
+    border-color: var(--blue-accent);
+    background: rgba(46,107,181,0.06);
+    box-shadow: 0 0 0 3px rgba(46,107,181,0.1);
+  }
+  .material-icon { font-size: 24px; margin-bottom: 4px; }
+  .material-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    margin-bottom: 2px;
+  }
+  .material-desc {
+    font-size: 11px;
+    color: var(--gray-500);
+    line-height: 1.3;
+  }
+  .material-price {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue-accent);
+    margin-top: 4px;
+  }
+
+  /* Result step */
+  .result-box {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .result-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+  }
+  .result-range {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .result-disclaimer {
+    font-size: 11px;
+    color: var(--gray-400);
+    line-height: 1.5;
+  }
+  .result-cta-section { text-align: center; }
+  .result-cta-section p {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy-deep);
+    margin-bottom: 14px;
+  }
+  .btn-schedule {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: var(--blue-accent);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-button);
+    margin-bottom: 10px;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-schedule:hover { background: #2558a0; }
+  .btn-call {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    color: var(--navy-deep);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .btn-call:hover { border-color: var(--navy-mid); }
+
+  /* Nav buttons */
+  .calc-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .btn-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-500);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    transition: color 0.2s;
+  }
+  .btn-back:hover { color: var(--navy-deep); }
+  .btn-next {
+    padding: 12px 32px;
+    background: var(--blue-accent);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-button);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+  .btn-next:hover { background: #2558a0; }
+  .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── SOCIAL PROOF BAR ── */
+  .proof-bar {
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 40px 24px;
+  }
+  .proof-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+  .proof-item {}
+  .proof-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--blue-glow);
+    margin-bottom: 4px;
+  }
+  .proof-label {
+    font-size: 13px;
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+
+  /* ── VALUE PROPS ── */
+  .value-section {
+    background: var(--navy-deep);
+    padding: 64px 24px;
+  }
+  .value-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .value-inner h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 48px;
+    color: var(--white);
+  }
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .value-card {
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .value-card:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.12);
+  }
+  .value-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(46,107,181,0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .value-icon svg { width: 20px; height: 20px; color: var(--blue-glow); }
+  .value-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .value-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--gray-400);
+  }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    background: var(--navy);
+    padding: 48px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .bottom-cta h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .bottom-cta p {
+    color: var(--gray-400);
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .bottom-cta .btn-schedule {
+    display: inline-block;
+    width: auto;
+    padding: 15px 40px;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray-500);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .lp-footer a {
+    color: var(--gray-400);
+    text-decoration: none;
+  }
+  .lp-footer a:hover { color: var(--white); }
+
+  /* ── HONEYPOT (hidden from humans) ── */
+  .hp-field { position: absolute; left: -9999px; opacity: 0; height: 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .util-bar { display: none; }
+    .nav-links, .nav-phone { display: none; }
+    .hamburger { display: block; }
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 40px 20px;
+    }
+    .hero-copy { text-align: center; }
+    .hero-copy p { margin-left: auto; margin-right: auto; }
+    .trust-row { justify-content: center; }
+    .calc-card { max-width: 460px; margin: 0 auto; }
+    .proof-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .value-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .quick-sizes { grid-template-columns: repeat(2, 1fr); }
+    .material-grid { grid-template-columns: 1fr; }
+    .proof-inner { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── UTILITY BAR ─── -->
+<div class="util-bar">
+  <div class="util-bar-inner">
+    <div class="util-links">
+      <a href="https://www.extfinishes.com/default.aspx">Home</a>
+      <a href="https://www.extfinishes.com/newsletters.aspx">Newsletters</a>
+      <a href="https://www.extfinishes.com/warranty-information.aspx">Warranty Info</a>
+    </div>
+    <div class="util-social">
+      <a href="https://www.facebook.com" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="https://www.instagram.com" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN NAV ─── -->
+<nav class="main-nav">
+  <div class="nav-inner">
+    <a href="https://www.extfinishes.com" class="nav-logo">
+      <img src="https://www.extfinishes.com/Userfiles/template/logo-white.svg" alt="Exterior Finishes — Where Service &amp; Quality Meet">
+    </a>
+
+    <ul class="nav-links">
+      <li>
+        <a href="https://www.extfinishes.com/new-construction.aspx">New Construction</a>
+        <div class="dropdown">
+          <a href="https://www.extfinishes.com/residential.aspx">Residential</a>
+          <a href="https://www.extfinishes.com/multi-family.aspx">Multi-Family / Commercial</a>
+          <a href="https://www.extfinishes.com/window-services.aspx">Windows</a>
+        </div>
+      </li>
+      <li><a href="https://www.extfinishes.com/exterior-renovations.aspx">Exterior Renovations</a></li>
+      <li><a href="https://www.extfinishes.com/projects.aspx">Projects</a></li>
+      <li>
+        <a href="https://www.extfinishes.com/about.aspx">About</a>
+        <div class="dropdown">
+          <a href="https://www.extfinishes.com/the-team.aspx">The Team</a>
+        </div>
+      </li>
+      <li>
+        <a href="https://www.extfinishes.com/contact-us.aspx">Contact</a>
+        <div class="dropdown">
+          <a href="https://www.extfinishes.com/resources.aspx">Resources</a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="nav-phone">
+      <a href="tel:4253979359">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        (425) 397.9359
+      </a>
+    </div>
+
+    <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── MOBILE NAV OVERLAY ─── -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-top">
+    <img src="https://www.extfinishes.com/Userfiles/template/logo-white.svg" alt="Exterior Finishes" style="height:36px;">
+    <button class="mobile-close" onclick="toggleMobileNav()" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="https://www.extfinishes.com/new-construction.aspx">New Construction</a></li>
+    <li class="sub"><a href="https://www.extfinishes.com/residential.aspx">Residential</a></li>
+    <li class="sub"><a href="https://www.extfinishes.com/multi-family.aspx">Multi-Family / Commercial</a></li>
+    <li class="sub"><a href="https://www.extfinishes.com/window-services.aspx">Windows</a></li>
+    <li><a href="https://www.extfinishes.com/exterior-renovations.aspx">Exterior Renovations</a></li>
+    <li><a href="https://www.extfinishes.com/projects.aspx">Projects</a></li>
+    <li><a href="https://www.extfinishes.com/about.aspx">About</a></li>
+    <li class="sub"><a href="https://www.extfinishes.com/the-team.aspx">The Team</a></li>
+    <li><a href="https://www.extfinishes.com/contact-us.aspx">Contact</a></li>
+    <li class="sub"><a href="https://www.extfinishes.com/resources.aspx">Resources</a></li>
+  </ul>
+  <div class="mobile-nav-phone">
+    <a href="tel:4253979359">📞 (425) 397.9359</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg" role="img" aria-label="Residential siding project by Exterior Finishes"></div>
+  <div class="hero-inner">
+
+    <!-- Left — Messaging -->
+    <div class="hero-copy">
+      <div class="hero-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z"/></svg>
+        Serving Western WA Since 2007
+      </div>
+      <h1>Get Your <em>Siding Cost Estimate</em> in Under 60 Seconds</h1>
+      <p>Use our instant calculator to get a ballpark renovation cost — then schedule a free on-site consultation for an exact quote. No obligation, ever.</p>
+
+      <div class="trust-row">
+        <div class="trust-pill">
+          <svg class="check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          18+ Years in Business
+        </div>
+        <div class="trust-pill">
+          <svg class="check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Licensed &amp; Insured
+        </div>
+        <div class="trust-pill">
+          <svg class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z"/></svg>
+          5-Star Rated
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right — Calculator -->
+    <div class="calc-card">
+      <div class="calc-header">
+        <h2>Siding Cost Calculator</h2>
+        <p>Instant ballpark estimate — no signup required</p>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-step active" id="prog1"></div>
+        <div class="progress-step" id="prog2"></div>
+        <div class="progress-step" id="prog3"></div>
+      </div>
+      <div class="step-indicator" id="stepIndicator">Step 1 of 3</div>
+
+      <div class="calc-body">
+        <!-- Honeypot -->
+        <div class="hp-field" aria-hidden="true">
+          <label>Leave blank</label>
+          <input type="text" name="website" id="hpField" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- STEP 1: Contact Info -->
+        <div class="step active" id="step1">
+          <div class="step-label">Step 1</div>
+          <div class="step-title">Tell us about yourself</div>
+          <div class="form-group">
+            <input type="text" id="fullName" placeholder="Full Name" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" id="emailAddress" placeholder="Email Address" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" id="phoneNumber" placeholder="Phone Number" autocomplete="tel">
+          </div>
+          <div class="calc-nav">
+            <button class="btn-next" onclick="goToStep(2)" id="btn1">
+              Next <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Square Footage -->
+        <div class="step" id="step2">
+          <div class="step-label">Step 2</div>
+          <div class="step-title">Approximate exterior sqft?</div>
+          <div class="sqft-input-wrap">
+            <input type="number" id="sqftInput" placeholder="2,500" min="100" max="50000">
+            <span class="sqft-unit">sq ft</span>
+          </div>
+          <div class="quick-sizes">
+            <button class="size-btn" onclick="selectSize(this, 1500)">
+              <div class="size-label">Small</div>
+              <div class="size-value">~1,500</div>
+            </button>
+            <button class="size-btn" onclick="selectSize(this, 2500)">
+              <div class="size-label">Average</div>
+              <div class="size-value">~2,500</div>
+            </button>
+            <button class="size-btn" onclick="selectSize(this, 4000)">
+              <div class="size-label">Large</div>
+              <div class="size-value">~4,000</div>
+            </button>
+            <button class="size-btn" onclick="selectSize(this, 6000)">
+              <div class="size-label">XL</div>
+              <div class="size-value">~6,000+</div>
+            </button>
+          </div>
+          <div class="calc-nav">
+            <button class="btn-back" onclick="goToStep(1)">← Back</button>
+            <button class="btn-next" onclick="goToStep(3)" id="btn2">
+              Next <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Material -->
+        <div class="step" id="step3">
+          <div class="step-label">Step 3</div>
+          <div class="step-title">Choose a siding material</div>
+          <div class="material-grid">
+            <div class="material-card" onclick="selectMaterial(this, 'vinyl', 4, 8)">
+              <div class="material-icon">🪟</div>
+              <div class="material-name">Vinyl</div>
+              <div class="material-desc">Budget-friendly</div>
+              <div class="material-price">$4–$8 /sf</div>
+            </div>
+            <div class="material-card" onclick="selectMaterial(this, 'fiber_cement', 8, 14)">
+              <div class="material-icon">🧱</div>
+              <div class="material-name">Fiber Cement</div>
+              <div class="material-desc">HardiePlank — PNW favorite</div>
+              <div class="material-price">$8–$14 /sf</div>
+            </div>
+            <div class="material-card" onclick="selectMaterial(this, 'engineered_wood', 7, 12)">
+              <div class="material-icon">🪵</div>
+              <div class="material-name">Eng. Wood</div>
+              <div class="material-desc">LP SmartSide</div>
+              <div class="material-price">$7–$12 /sf</div>
+            </div>
+            <div class="material-card" onclick="selectMaterial(this, 'cedar', 10, 18)">
+              <div class="material-icon">🌲</div>
+              <div class="material-name">Natural Cedar</div>
+              <div class="material-desc">Premium look</div>
+              <div class="material-price">$10–$18 /sf</div>
+            </div>
+            <div class="material-card" onclick="selectMaterial(this, 'metal', 10, 20)">
+              <div class="material-icon">⬛</div>
+              <div class="material-name">Metal Panel</div>
+              <div class="material-desc">Modern aesthetic</div>
+              <div class="material-price">$10–$20 /sf</div>
+            </div>
+            <div class="material-card" onclick="selectMaterial(this, 'not_sure', 6, 14)">
+              <div class="material-icon">❓</div>
+              <div class="material-name">Not Sure Yet</div>
+              <div class="material-desc">We'll help you decide</div>
+              <div class="material-price">$6–$14 /sf</div>
+            </div>
+          </div>
+          <div class="calc-nav">
+            <button class="btn-back" onclick="goToStep(3)">← Back</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Result -->
+        <div class="step" id="step4">
+          <div class="step-label">Your Estimate</div>
+          <div class="step-title">Estimated Renovation Cost</div>
+          <div class="result-box">
+            <div class="result-label">Ballpark Range</div>
+            <div class="result-range" id="resultRange">$20,000 – $35,000</div>
+            <div class="result-disclaimer">* Rough estimate for budgeting only. Actual costs vary based on tear-off, trim, complexity, and accessibility.</div>
+          </div>
+          <div class="result-cta-section">
+            <p>Want an exact number?</p>
+            <a href="tel:4258423906" class="btn-schedule">
+              📞&nbsp; Call (425) 842-3906
+            </a>
+            <a href="https://www.extfinishes.com/contact-us.aspx" class="btn-call">
+              Schedule Free Site Visit →
+            </a>
+          </div>
+          <div class="calc-nav">
+            <button class="btn-back" onclick="goToStep(3)">← Start Over</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SOCIAL PROOF BAR ─── -->
+<div class="proof-bar">
+  <div class="proof-inner">
+    <div class="proof-item">
+      <div class="proof-number">18+</div>
+      <div class="proof-label">Years in Business</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-number">500+</div>
+      <div class="proof-label">Projects Completed</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-number">6</div>
+      <div class="proof-label">Counties Served</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-number">5★</div>
+      <div class="proof-label">Customer Rating</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── VALUE PROPS ─── -->
+<section class="value-section">
+  <div class="value-inner">
+    <h3>Why Homeowners Choose Exterior Finishes</h3>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4>No Surprise Costs</h4>
+        <p>Detailed, transparent quotes with competitive pricing. No hidden fees — the price we quote is the price you pay.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h4>Dedicated Project Manager</h4>
+        <p>One point of contact from start to finish. You'll always know what's happening and what comes next.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h4>Manufacturer-Certified Installs</h4>
+        <p>Our crews follow manufacturer specs and work with 3rd-party water intrusion engineers to protect your investment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BOTTOM CTA ─── -->
+<div class="bottom-cta">
+  <h3>Ready for an Exact Quote?</h3>
+  <p>Schedule a free on-site consultation — no obligation, no pressure.</p>
+  <a href="tel:4258423906" class="btn-schedule">Call (425) 842-3906</a>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer class="lp-footer">
+  &copy; 2026 Exterior Finishes. All Rights Reserved. &nbsp;|&nbsp;
+  <a href="https://www.extfinishes.com/privacy-policy.aspx">Privacy Policy</a> &nbsp;|&nbsp;
+  <a href="https://www.extfinishes.com/">Main Website</a>
+</footer>
+
+<script>
+  // ─── STATE ───
+  let currentStep = 1;
+  let selectedSqft = null;
+  let selectedMaterial = null;
+  let materialLow = 0;
+  let materialHigh = 0;
+  const pageLoadTime = Date.now();
+
+  // ─── MOBILE NAV ───
+  function toggleMobileNav() {
+    document.getElementById('mobileNav').classList.toggle('open');
+    document.body.style.overflow =
+      document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
+  }
+
+  // ─── NAVIGATION ───
+  function goToStep(n) {
+    // Validation
+    if (n === 2 && currentStep === 1) {
+      const name = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('emailAddress').value.trim();
+      if (!name || !email) {
+        // Subtle shake
+        document.getElementById('step1').style.animation = 'none';
+        setTimeout(() => { document.getElementById('step1').style.animation = ''; }, 10);
+        return;
+      }
+    }
+    if (n === 3 && currentStep === 2) {
+      const sqft = document.getElementById('sqftInput').value;
+      if (!sqft || sqft < 100) return;
+    }
+
+    // If going back from step 4 label says "Start Over"
+    if (currentStep === 4 && n === 3) {
+      // Reset to step 1
+      n = 1;
+      resetCalculator();
+    }
+
+    currentStep = n;
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+
+    // Progress
+    for (let i = 1; i <= 3; i++) {
+      document.getElementById('prog' + i).classList.toggle('active', i <= Math.min(n, 3));
+    }
+    document.getElementById('stepIndicator').textContent =
+      n <= 3 ? 'Step ' + n + ' of 3' : 'Results';
+  }
+
+  function resetCalculator() {
+    document.getElementById('fullName').value = '';
+    document.getElementById('emailAddress').value = '';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('sqftInput').value = '';
+    selectedSqft = null;
+    selectedMaterial = null;
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.material-card').forEach(c => c.classList.remove('selected'));
+  }
+
+  // ─── SIZE SELECTION ───
+  function selectSize(el, val) {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('sqftInput').value = val;
+    selectedSqft = val;
+  }
+
+  // ─── MATERIAL SELECTION ───
+  function selectMaterial(el, name, low, high) {
+    document.querySelectorAll('.material-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedMaterial = name;
+    materialLow = low;
+    materialHigh = high;
+
+    // Calculate
+    const sqft = parseInt(document.getElementById('sqftInput').value) || 2500;
+    const estLow = sqft * low;
+    const estHigh = sqft * high;
+    document.getElementById('resultRange').textContent =
+      '$' + estLow.toLocaleString() + ' – $' + estHigh.toLocaleString();
+
+    // Submit lead data
+    submitLead(sqft, name, estLow, estHigh);
+
+    // Go to results
+    goToStep(4);
+  }
+
+  // ─── LEAD SUBMISSION ───
+  function submitLead(sqft, material, estLow, estHigh) {
+    // Bot protection checks
+    const hp = document.getElementById('hpField').value;
+    if (hp) return; // honeypot triggered
+
+    const elapsed = Date.now() - pageLoadTime;
+    if (elapsed < 3000) return; // too fast — likely bot
+
+    const payload = {
+      name: document.getElementById('fullName').value.trim(),
+      email: document.getElementById('emailAddress').value.trim(),
+      phone: document.getElementById('phoneNumber').value.trim(),
+      sqft: sqft,
+      material: material,
+      estimate_low: estLow,
+      estimate_high: estHigh,
+      source: 'google_ads_landing_page',
+      timestamp: new Date().toISOString(),
+      page_url: window.location.href
+    };
+
+    // ═══════════════════════════════════════════════
+    // 🔧 CONFIGURE: Replace with your n8n webhook URL
+    // Example: https://your-railway-app.railway.app/webhook/siding-calculator
+    // ═══════════════════════════════════════════════
+    const WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL_HERE';
+
+    if (WEBHOOK_URL === 'YOUR_N8N_WEBHOOK_URL_HERE') {
+      console.log('Lead data (webhook not configured):', payload);
+      return;
+    }
+
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(err => console.error('Webhook error:', err));
+  }
+
+  // ─── GOOGLE ADS CONVERSION TRACKING ───
+  // Uncomment and configure when ready:
+  // function trackConversion() {
+  //   gtag('event', 'conversion', {
+  //     'send_to': 'AW-XXXXXXXXX/XXXXXXXXXXXXXXXXXXXX',
+  //     'value': 1.0,
+  //     'currency': 'USD'
+  //   });
+  // }
+</script>
+
+</body>
+</html>

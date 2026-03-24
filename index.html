@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
+<!-- Cloudflare Turnstile (invisible CAPTCHA) -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 <!-- Google tag (gtag.js) — Google Ads Conversion Tracking -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17106934414"></script>
 <script>
@@ -998,6 +1001,12 @@
           <input type="text" name="website" id="hpField" tabindex="-1" autocomplete="off">
         </div>
 
+        <!-- Cloudflare Turnstile (invisible) -->
+        <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACvejzYZI0uYQsj5" data-callback="onTurnstileSuccess" data-size="invisible"></div>
+
+        <!-- Validation error message -->
+        <div id="validationError" style="display:none; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#fca5a5; text-align:center;"></div>
+
         <!-- STEP 1: Contact Info -->
         <div class="step active" id="step1">
           <div class="step-label">Step 1</div>
@@ -1202,6 +1211,108 @@
   let materialHigh = 0;
   const pageLoadTime = Date.now();
 
+  // ─── BOT PROTECTION: Human Interaction Tracking ───
+  let humanInteractions = { mouse: 0, scroll: 0, keypress: 0, touch: 0 };
+  let turnstileToken = null;
+  let submissionCount = 0;
+  const MAX_SUBMISSIONS_PER_SESSION = 3;
+
+  document.addEventListener('mousemove', () => { humanInteractions.mouse++; }, { passive: true });
+  document.addEventListener('scroll', () => { humanInteractions.scroll++; }, { passive: true });
+  document.addEventListener('keydown', () => { humanInteractions.keypress++; }, { passive: true });
+  document.addEventListener('touchstart', () => { humanInteractions.touch++; }, { passive: true });
+
+  function hasHumanInteraction() {
+    const total = humanInteractions.mouse + humanInteractions.scroll +
+                  humanInteractions.keypress + humanInteractions.touch;
+    // Require at least 3 interactions AND at least 2 different types
+    const typesUsed = [
+      humanInteractions.mouse > 0,
+      humanInteractions.scroll > 0,
+      humanInteractions.keypress > 0,
+      humanInteractions.touch > 0
+    ].filter(Boolean).length;
+    return total >= 3 && typesUsed >= 1;
+  }
+
+  // ─── BOT PROTECTION: Turnstile Callback ───
+  function onTurnstileSuccess(token) {
+    turnstileToken = token;
+  }
+
+  // ─── BOT PROTECTION: Disposable Email Detection ───
+  const DISPOSABLE_DOMAINS = [
+    'mailinator.com','guerrillamail.com','guerrillamail.de','tempmail.com','throwaway.email',
+    'temp-mail.org','fakeinbox.com','sharklasers.com','guerrillamailblock.com','grr.la',
+    'guerrillamail.info','guerrillamail.biz','guerrillamail.net','yopmail.com','yopmail.fr',
+    'trashmail.com','trashmail.me','trashmail.net','dispostable.com','maildrop.cc',
+    'mailnesia.com','tempr.email','discard.email','discardmail.com','harakirimail.com',
+    'mailcatch.com','tempail.com','mohmal.com','burpcollaborator.net','10minutemail.com',
+    'getnada.com','emailondeck.com','33mail.com','maildax.com','binkmail.com',
+    'bobmail.info','inboxalias.com','spamgourmet.com','jetable.org','trash-mail.com',
+    'mytemp.email','tempinbox.com','burnermail.io','guerrillamail.org'
+  ];
+
+  function isDisposableEmail(email) {
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (!domain) return true;
+    return DISPOSABLE_DOMAINS.includes(domain);
+  }
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(email)) return false;
+    if (isDisposableEmail(email)) return false;
+    return true;
+  }
+
+  // ─── BOT PROTECTION: Phone Validation ───
+  function isValidUSPhone(phone) {
+    if (!phone || phone.trim() === '') return true; // Phone is optional
+    const digits = phone.replace(/\D/g, '');
+    // Accept 10-digit US numbers (with or without leading 1)
+    if (digits.length === 10) return true;
+    if (digits.length === 11 && digits[0] === '1') return true;
+    return false;
+  }
+
+  // ─── VALIDATION ERROR DISPLAY ───
+  function showError(msg) {
+    const el = document.getElementById('validationError');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 5000);
+  }
+
+  function clearError() {
+    document.getElementById('validationError').style.display = 'none';
+  }
+
+  // ─── BOT PROTECTION: Full Check ───
+  function passesAllBotChecks() {
+    // 1. Honeypot
+    if (document.getElementById('hpField').value) {
+      console.log('Bot check failed: honeypot');
+      return false;
+    }
+    // 2. Page load timer (5 seconds — increased from 3)
+    if (Date.now() - pageLoadTime < 5000) {
+      console.log('Bot check failed: too fast');
+      return false;
+    }
+    // 3. Human interaction
+    if (!hasHumanInteraction()) {
+      console.log('Bot check failed: no human interaction');
+      return false;
+    }
+    // 4. Rate limiting
+    if (submissionCount >= MAX_SUBMISSIONS_PER_SESSION) {
+      showError('Too many submissions. Please refresh the page.');
+      return false;
+    }
+    return true;
+  }
+
   // ─── MOBILE NAV ───
   function toggleMobileNav() {
     document.getElementById('mobileNav').classList.toggle('open');
@@ -1211,17 +1322,34 @@
 
   // ─── NAVIGATION ───
   function goToStep(n) {
-    // Validation
+    clearError();
+
+    // Validation for Step 1 → Step 2
     if (n === 2 && currentStep === 1) {
       const name = document.getElementById('fullName').value.trim();
       const email = document.getElementById('emailAddress').value.trim();
+      const phone = document.getElementById('phoneNumber').value.trim();
+
       if (!name || !email) {
-        // Subtle shake
+        showError('Please enter your name and email.');
         document.getElementById('step1').style.animation = 'none';
         setTimeout(() => { document.getElementById('step1').style.animation = ''; }, 10);
         return;
       }
-      // Fire partial lead capture
+
+      // Validate email
+      if (!isValidEmail(email)) {
+        showError('Please enter a valid email address.');
+        return;
+      }
+
+      // Validate phone if provided
+      if (!isValidUSPhone(phone)) {
+        showError('Please enter a valid US phone number.');
+        return;
+      }
+
+      // Fire partial lead capture (with bot checks)
       submitPartialLead();
     }
     if (n === 3 && currentStep === 2) {
@@ -1231,7 +1359,6 @@
 
     // If going back from step 4 label says "Start Over"
     if (currentStep === 4 && n === 3) {
-      // Reset to step 1
       n = 1;
       resetCalculator();
     }
@@ -1257,6 +1384,7 @@
     selectedMaterial = null;
     document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.material-card').forEach(c => c.classList.remove('selected'));
+    clearError();
   }
 
   // ─── SIZE SELECTION ───
@@ -1275,7 +1403,6 @@
     materialLow = low;
     materialHigh = high;
 
-    // Calculate
     const sqft = parseInt(document.getElementById('sqftInput').value) || 2500;
     const estLow = sqft * low;
     const estHigh = sqft * high;
@@ -1291,17 +1418,19 @@
 
   // ─── PARTIAL LEAD CAPTURE (Step 1 → Step 2) ───
   function submitPartialLead() {
-    const hp = document.getElementById('hpField').value;
-    if (hp) return;
+    if (!passesAllBotChecks()) return;
 
-    const elapsed = Date.now() - pageLoadTime;
-    if (elapsed < 3000) return;
+    submissionCount++;
 
     const payload = {
       name: document.getElementById('fullName').value.trim(),
       email: document.getElementById('emailAddress').value.trim(),
       phone: document.getElementById('phoneNumber').value.trim(),
-      source: 'google_ads_landing_page'
+      source: 'google_ads_landing_page',
+      turnstile_token: turnstileToken || null,
+      interaction_score: humanInteractions.mouse + humanInteractions.scroll +
+                         humanInteractions.keypress + humanInteractions.touch,
+      page_time_ms: Date.now() - pageLoadTime
     };
 
     fetch('https://primary-production-e4032.up.railway.app/webhook/siding-calc-lead', {
@@ -1313,11 +1442,9 @@
 
   // ─── COMPLETE LEAD SUBMISSION (Material selected → Results) ───
   function submitLead(sqft, material, estLow, estHigh) {
-    const hp = document.getElementById('hpField').value;
-    if (hp) return;
+    if (!passesAllBotChecks()) return;
 
-    const elapsed = Date.now() - pageLoadTime;
-    if (elapsed < 3000) return;
+    submissionCount++;
 
     const estimateRange = '$' + estLow.toLocaleString() + ' – $' + estHigh.toLocaleString();
 
@@ -1332,7 +1459,11 @@
       estimate_high: estHigh,
       source: 'google_ads_landing_page',
       timestamp: new Date().toISOString(),
-      page_url: window.location.href
+      page_url: window.location.href,
+      turnstile_token: turnstileToken || null,
+      interaction_score: humanInteractions.mouse + humanInteractions.scroll +
+                         humanInteractions.keypress + humanInteractions.touch,
+      page_time_ms: Date.now() - pageLoadTime
     };
 
     fetch('https://primary-production-e4032.up.railway.app/webhook/siding-calc-complete', {
@@ -1341,7 +1472,6 @@
       body: JSON.stringify(payload)
     })
     .then(() => {
-      // Fire Google Ads conversion on successful submission
       trackConversion();
     })
     .catch(err => console.error('Complete lead webhook error:', err));

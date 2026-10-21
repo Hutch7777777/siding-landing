@@ -1452,7 +1452,8 @@
       const t = (window.efTrack && window.efTrack.touch && window.efTrack.touch()) || {};
       const first = t.first || null, last = t.last || null;
       const urlParam = (n) => new URLSearchParams(window.location.search).get(n) || '';
-      return {
+      // A JSON round trip here, inside the guard: whatever a future track.js returns, the payload still serializes
+      return JSON.parse(JSON.stringify({
         lid: (window.efTrack && window.efTrack.lid) || '',
         channel: t.channel || '',
         first_touch: first,
@@ -1460,7 +1461,7 @@
         gclid: (last && last.gclid) || (first && first.gclid) || urlParam('gclid'),
         fbclid: (last && last.fbclid) || (first && first.fbclid) || urlParam('fbclid'),
         event_id: eventId || ''
-      };
+      }));
     } catch (e) { return {}; }
   }
 

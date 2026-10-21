@@ -20,6 +20,27 @@
   gtag('config', 'AW-17106934414');
 </script>
 
+<!-- Intent Lead Platform tracking (track.js): visits, call taps and the calculator's steps, with the ad click or tracked
+     link each visitor came from. The live page reports to Exterior Finishes. Previews report to EF Test, post to n8n's
+     test webhooks and skip the Google Ads conversion. If the script is blocked or slow, the calculator works as before. -->
+<script>
+  // Previews: localhost, a file opened from disk, and *.vercel.app addresses other than the live one. Every other host
+  // (siding.extfinishes.com, siding-landing.vercel.app, any new domain) is the live page.
+  var ILP_PREVIEW = (function (h) {
+    return !h || h === 'localhost' || h === '127.0.0.1' || (/\.vercel\.app$/.test(h) && h !== 'siding-landing.vercel.app');
+  })(location.hostname);
+  (function () {
+    try {
+      var s = document.createElement('script');
+      s.src = 'https://intent-lead-platform-anthonyhutch20-7282s-projects.vercel.app/track.js';
+      s.async = true;
+      s.setAttribute('data-org', ILP_PREVIEW ? 'ef-test' : 'exterior-finishes');
+      s.setAttribute('data-manual', ''); // no <form> on this page: the calculator calls efTrack itself
+      document.head.appendChild(s);
+    } catch (e) {}
+  })();
+</script>
+
 <style>
   :root {
     --navy-deep: #0c1a2e;
@@ -1416,24 +1437,59 @@
     goToStep(4);
   }
 
+  // ─── INTENT LEAD PLATFORM (track.js, loaded in <head>) ───
+  // Guarded: if track.js is blocked or hasn't loaded, these return nothing and the lead still goes to n8n as before.
+  const IS_PREVIEW = window.ILP_PREVIEW === true;
+  const N8N_WEBHOOKS = 'https://primary-production-e4032.up.railway.app/' + (IS_PREVIEW ? 'webhook-test/' : 'webhook/');
+
+  function ilpTrack(event, data) {
+    try { return (window.efTrack && window.efTrack(event, data)) || ''; } catch (e) { return ''; }
+  }
+
+  // New n8n fields: where this visitor came from. Existing fields (including `source`) are unchanged.
+  function ilpFields(eventId) {
+    try {
+      const t = (window.efTrack && window.efTrack.touch && window.efTrack.touch()) || {};
+      const first = t.first || null, last = t.last || null;
+      const urlParam = (n) => new URLSearchParams(window.location.search).get(n) || '';
+      return {
+        lid: (window.efTrack && window.efTrack.lid) || '',
+        channel: t.channel || '',
+        first_touch: first,
+        last_touch: last,
+        gclid: (last && last.gclid) || (first && first.gclid) || urlParam('gclid'),
+        fbclid: (last && last.fbclid) || (first && first.fbclid) || urlParam('fbclid'),
+        event_id: eventId || ''
+      };
+    } catch (e) { return {}; }
+  }
+
   // ─── PARTIAL LEAD CAPTURE (Step 1 → Step 2) ───
   function submitPartialLead() {
     if (!passesAllBotChecks()) return;
 
     submissionCount++;
 
+    const name = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('emailAddress').value.trim();
+    const phone = document.getElementById('phoneNumber').value.trim();
+    const names = name.split(/\s+/);
+    const eventId = ilpTrack('form_submit', { email, phone, first_name: names[0] || '', last_name: names.slice(1).join(' ') });
+
     const payload = {
-      name: document.getElementById('fullName').value.trim(),
-      email: document.getElementById('emailAddress').value.trim(),
-      phone: document.getElementById('phoneNumber').value.trim(),
+      name: name,
+      email: email,
+      phone: phone,
       source: 'google_ads_landing_page',
       turnstile_token: turnstileToken || null,
       interaction_score: humanInteractions.mouse + humanInteractions.scroll +
                          humanInteractions.keypress + humanInteractions.touch,
-      page_time_ms: Date.now() - pageLoadTime
+      page_time_ms: Date.now() - pageLoadTime,
+      ...ilpFields(eventId),
+      page_url: window.location.href
     };
 
-    fetch('https://primary-production-e4032.up.railway.app/webhook/siding-calc-lead', {
+    fetch(N8N_WEBHOOKS + 'siding-calc-lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -1447,11 +1503,15 @@
     submissionCount++;
 
     const estimateRange = '$' + estLow.toLocaleString() + ' – $' + estHigh.toLocaleString();
+    const email = document.getElementById('emailAddress').value.trim();
+    const phone = document.getElementById('phoneNumber').value.trim();
+    // The estimate is stored as an estimate (details.estimate), never as revenue
+    const eventId = ilpTrack('calculator_used', { email, phone, estimate: Math.round((estLow + estHigh) / 2) });
 
     const payload = {
       name: document.getElementById('fullName').value.trim(),
-      email: document.getElementById('emailAddress').value.trim(),
-      phone: document.getElementById('phoneNumber').value.trim(),
+      email: email,
+      phone: phone,
       sqft: sqft,
       material: material,
       estimateRange: estimateRange,
@@ -1463,16 +1523,17 @@
       turnstile_token: turnstileToken || null,
       interaction_score: humanInteractions.mouse + humanInteractions.scroll +
                          humanInteractions.keypress + humanInteractions.touch,
-      page_time_ms: Date.now() - pageLoadTime
+      page_time_ms: Date.now() - pageLoadTime,
+      ...ilpFields(eventId)
     };
 
-    fetch('https://primary-production-e4032.up.railway.app/webhook/siding-calc-complete', {
+    fetch(N8N_WEBHOOKS + 'siding-calc-complete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
     .then(() => {
-      trackConversion();
+      if (!IS_PREVIEW) trackConversion(); // previews never count as Google Ads conversions
     })
     .catch(err => console.error('Complete lead webhook error:', err));
   }
